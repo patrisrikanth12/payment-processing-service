@@ -24,9 +24,10 @@ public class PaymentController {
 	@Autowired
 	private TransactionMapper transactionMapper;
 	
-	@PostMapping
+	@PostMapping(Endpoints.STATUS_UPDATE)
 	public ResponseEntity<TransactionReqRes> createPayment(@RequestBody TransactionReqRes transactionReq) {
 		Transaction transaction = transactionMapper.toDTO(transactionReq);
+		System.out.println(transactionReq.getTxnStatusId());
 		Transaction returnedTransaction = paymentStatusService.updateStatus(transaction);
 		TransactionReqRes returnedTransactionReqRes = transactionMapper.toResponseObject(returnedTransaction);
 		return new ResponseEntity<TransactionReqRes>(returnedTransactionReqRes, HttpStatus.CREATED);

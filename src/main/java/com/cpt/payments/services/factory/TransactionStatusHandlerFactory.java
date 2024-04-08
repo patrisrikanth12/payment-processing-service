@@ -6,10 +6,10 @@ import org.springframework.stereotype.Component;
 
 import com.cpt.payments.constants.TransactionStatusEnum;
 import com.cpt.payments.services.TransactionStatusHandler;
-import com.cpt.payments.services.status.handlers.ApprovedTransactionStatusHandler;
-import com.cpt.payments.services.status.handlers.CreatedTransactionStatusHandler;
-import com.cpt.payments.services.status.handlers.FailedTransactionStatusHandler;
-import com.cpt.payments.services.status.handlers.PendingTransactionStatusHandler;
+import com.cpt.payments.services.status.handler.ApprovedTransactionStatusHandler;
+import com.cpt.payments.services.status.handler.CreatedTransactionStatusHandler;
+import com.cpt.payments.services.status.handler.FailedTransactionStatusHandler;
+import com.cpt.payments.services.status.handler.PendingTransactionStatusHandler;
 
 @Component
 public class TransactionStatusHandlerFactory {
