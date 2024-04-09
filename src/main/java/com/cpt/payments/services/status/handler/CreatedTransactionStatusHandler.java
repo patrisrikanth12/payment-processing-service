@@ -1,11 +1,15 @@
 package com.cpt.payments.services.status.handler;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 
+import com.cpt.payments.constants.ErrorCodeEnum;
 import com.cpt.payments.constants.TransactionStatusEnum;
 import com.cpt.payments.dao.TransactionDao;
 import com.cpt.payments.dtos.Transaction;
+import com.cpt.payments.exception.PaymentProcessingException;
 import com.cpt.payments.services.TransactionStatusHandler;
 
 @Component
