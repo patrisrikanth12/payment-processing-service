@@ -10,7 +10,8 @@ public enum TransactionStatusEnum {
 	
 	@Getter
 	private int id;
-	
+
+	@Getter
 	private String name;
 	
 	private TransactionStatusEnum(int id, String name) {

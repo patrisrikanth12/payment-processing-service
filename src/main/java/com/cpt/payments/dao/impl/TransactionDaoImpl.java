@@ -5,7 +5,10 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Component;
 
 import com.cpt.payments.dao.TransactionDao;
@@ -28,33 +31,17 @@ public class TransactionDaoImpl implements TransactionDao {
 	             + ":debitorAccount, :creditorAccount, :providerReference, :merchantTransactionReference, :retryCount)";
 
 
-        Map<String, Object> namedParameters = new HashMap<>();
-        namedParameters.put("id", transaction.getId());
-        namedParameters.put("userId", transaction.getUserId());
-        namedParameters.put("paymentMethodId", transaction.getPaymentMethodId());
-        namedParameters.put("providerId", transaction.getProviderId());
-        namedParameters.put("paymentTypeId", transaction.getPaymentTypeId());
-        namedParameters.put("amount", transaction.getAmount());
-        namedParameters.put("currency", transaction.getCurrency());
-        namedParameters.put("txnStatusId", transaction.getTxnStatusId());
-        namedParameters.put("txnReference", transaction.getTxnReference());
-        namedParameters.put("txnDetailsId", transaction.getTxnDetailsId());
-        namedParameters.put("providerCode", transaction.getProviderCode());
-        namedParameters.put("providerMessage", transaction.getProviderMessage());
-        namedParameters.put("debitorAccount", transaction.getDebitorAccount());
-        namedParameters.put("creditorAccount", transaction.getCreditorAccount());
-        namedParameters.put("providerReference", transaction.getProviderReference());
-        namedParameters.put("merchantTransactionReference", transaction.getMerchantTransactionReference());
-        namedParameters.put("retryCount", transaction.getRetryCount());
+		SqlParameterSource parameterSource = new BeanPropertySqlParameterSource(transaction);
         
         int isRowInserted = 0;
+        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         try {
-        	isRowInserted = jdbcTemplate.update(sql, namedParameters);
+        	isRowInserted = jdbcTemplate.update(sql, parameterSource, keyHolder);
         } catch(Exception e) {
         	System.out.println(e);
         	throw new RuntimeException("Something went wront while inserting transaction");
         }
-
+        transaction.setId(keyHolder.getKey().intValue());        
 		return isRowInserted == 0 ? null : transaction;
 	}
 	
