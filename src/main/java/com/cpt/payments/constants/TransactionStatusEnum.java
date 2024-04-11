@@ -4,9 +4,10 @@ import lombok.Getter;
 
 public enum TransactionStatusEnum {
 	CREATED(1, "CREATED"),
-	PENDING(2, "PENDING"),
-	FAILED(3, "FAILED"),
-	APPROVED(4, "APPROVED");
+	INITIATED(2, "INITIATED"),
+	PENDING(3, "PENDING"),
+	FAILED(4, "FAILED"),
+	APPROVED(5, "APPROVED");
 	
 	@Getter
 	private int id;

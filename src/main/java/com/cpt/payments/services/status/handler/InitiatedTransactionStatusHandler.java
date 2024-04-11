@@ -11,9 +11,8 @@ import com.cpt.payments.dtos.TransactionLog;
 import com.cpt.payments.services.TransactionStatusHandler;
 
 @Component
-public class PendingTransactionStatusHandler implements TransactionStatusHandler{
-
-
+public class InitiatedTransactionStatusHandler implements TransactionStatusHandler {
+	
 	@Autowired
 	TransactionDao transactionDao;
 	
@@ -28,11 +27,10 @@ public class PendingTransactionStatusHandler implements TransactionStatusHandler
 			return false;
 		}
 		TransactionLog transactionLog = TransactionLog.builder().transactionId(transaction.getId())
-				.txnFromStatus(TransactionStatusEnum.INITIATED.getName())
-				.txnToStatus(TransactionStatusEnum.PENDING.getName()).build();
+				.txnFromStatus(TransactionStatusEnum.CREATED.getName())
+				.txnToStatus(TransactionStatusEnum.INITIATED.getName()).build();
 		transactionLogDao.createTransactionLog(transactionLog);
 		return true;
 	}
-
 
 }

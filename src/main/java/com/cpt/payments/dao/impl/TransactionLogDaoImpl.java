@@ -19,8 +19,8 @@ public class TransactionLogDaoImpl implements TransactionLogDao{
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
 	@Override
-	public TransactionLog createTransactionLog(TransactionLog log) {
-		String sql = "INSERT INTO transactionLog (transactionId, txnFromStatus, txnToStatus) "
+	public boolean createTransactionLog(TransactionLog log) {
+		String sql = "INSERT INTO transaction_log (transactionId, txnFromStatus, txnToStatus) "
                 + "VALUES (:transactionId, :txnFromStatus, :txnToStatus)";
 		Map<String, Object> params = new HashMap<>();
         params.put("transactionId", log.getTransactionId());
@@ -29,10 +29,11 @@ public class TransactionLogDaoImpl implements TransactionLogDao{
 
         try {
         	jdbcTemplate.update(sql, params);
+        	return true;
         } catch(Exception e) {
-        	// handle exception
-        }
-		return null;
+        	System.out.println("Unable to log the transaction " + e.getMessage());
+        };
+		return false;
 	}
 	
 	
