@@ -61,4 +61,10 @@ public class TransactionDaoImpl implements TransactionDao {
 		}
 		return false;
 	}
+	public Transaction getTransactionById(Long id) {
+		  Map<String, Object> params = new HashMap<>();
+		  params.put("id", id);
+		  return jdbcTemplate.queryForObject(
+		      "SELECT * FROM Transaction WHERE id = :id", params, Transaction.class);
+		}
 }
