@@ -11,6 +11,7 @@ import com.cpt.payments.services.ProviderHandler;
 public class StripeProviderHandler implements ProviderHandler {
 	@Override
 	public PaymentResponse processPayment(Transaction transaction, ProcessingServiceRequest processingServiceRequest) {
-		return null;
+		PaymentResponse paymentResponse = PaymentResponse.builder().redirectUrl("example.com").paymentReference("abcdef").build();
+		return paymentResponse;
 	}
 }

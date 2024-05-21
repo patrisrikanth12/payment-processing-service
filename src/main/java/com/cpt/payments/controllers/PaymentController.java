@@ -3,6 +3,7 @@ package com.cpt.payments.controllers;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +15,7 @@ import com.cpt.payments.dtos.Transaction;
 import com.cpt.payments.pojos.PaymentResponse;
 import com.cpt.payments.pojos.ProcessingServiceRequest;
 import com.cpt.payments.pojos.TransactionReqRes;
+import com.cpt.payments.services.PaymentProcessingService;
 import com.cpt.payments.services.PaymentStatusService;
 import com.cpt.payments.utils.TransactionMapper;
 
@@ -23,6 +25,9 @@ public class PaymentController {
 	
 	@Autowired
 	private PaymentStatusService paymentStatusService;
+	
+	@Autowired
+	private PaymentProcessingService paymentProcessingService;
 	
 	@Autowired
 	private TransactionMapper transactionMapper;
@@ -38,6 +43,8 @@ public class PaymentController {
 	
 	@PostMapping(Endpoints.PROCESS_PAYMENT)
 	public ResponseEntity<PaymentResponse> processPayment(@RequestBody ProcessingServiceRequest processingServiceRequest) {
-		return null;
+		System.out.println("invoked");
+		PaymentResponse paymentResponse = this.paymentProcessingService.processPayment(processingServiceRequest);
+		return new ResponseEntity<PaymentResponse>(paymentResponse, HttpStatus.OK);
 	}
 }

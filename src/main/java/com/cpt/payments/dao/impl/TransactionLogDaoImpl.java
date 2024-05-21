@@ -35,6 +35,4 @@ public class TransactionLogDaoImpl implements TransactionLogDao{
         };
 		return false;
 	}
-	
-	
 }

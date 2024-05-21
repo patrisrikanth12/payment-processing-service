@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -43,7 +44,7 @@ public class TransactionDaoImpl implements TransactionDao {
 			isRowInserted = jdbcTemplate.update(sql, parameterSource, keyHolder);
 			transaction.setId(keyHolder.getKey().intValue());
 		} catch (Exception e) {
-			System.out.println("Something went wrong while creating the transaction");
+			System.out.println(e.getMessage());
 		}
 		return isRowInserted == 0 ? null : transaction;
 	}
@@ -65,6 +66,6 @@ public class TransactionDaoImpl implements TransactionDao {
 		  Map<String, Object> params = new HashMap<>();
 		  params.put("id", id);
 		  return jdbcTemplate.queryForObject(
-		      "SELECT * FROM Transaction WHERE id = :id", params, Transaction.class);
+		      "SELECT * FROM Transaction WHERE id = :id", params, new BeanPropertyRowMapper<Transaction>(Transaction.class));
 		}
 }
