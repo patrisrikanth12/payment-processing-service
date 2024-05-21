@@ -9,13 +9,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProcessingServiceRequest {
-	private long transactionId;
-	private String firstName;
-	private String lastName;
-	private String email;
-	private long quantity;
+public class StripeProviderRequest {
+	private String transactionReference;
+	private String currency;
+	private double amount;
+	private Long quantity;
 	private String productDescription;
-	private String successUrl; 
+	private String successUrl;
 	private String cancelUrl;
 }
