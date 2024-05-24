@@ -1,15 +1,16 @@
 package com.cpt.payments.pojos;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
+@Data
+@Builder
 @AllArgsConstructor
-@Getter
-@Setter
 @NoArgsConstructor
-public class ErrorResponse {
+public class ProviderServiceErrorResponse {
 	private String errorCode;
 	private String errorMessage;
+	private boolean tpProviderError;
 }
