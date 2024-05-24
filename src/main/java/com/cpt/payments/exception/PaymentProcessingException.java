@@ -4,10 +4,10 @@ import org.springframework.http.HttpStatusCode;
 
 public class PaymentProcessingException extends RuntimeException {
 	private HttpStatusCode httpStatusCode;
-	private int errorCode;
+	private String errorCode;
 	private String errorMessage;
 	
-	public PaymentProcessingException(HttpStatusCode httpStatusCode, int errorCode, String errorMessage) {
+	public PaymentProcessingException(HttpStatusCode httpStatusCode, String errorCode, String errorMessage) {
 		this.httpStatusCode = httpStatusCode;
 		this.errorCode = errorCode;
 		this.errorMessage = errorMessage;
@@ -21,11 +21,11 @@ public class PaymentProcessingException extends RuntimeException {
 		this.httpStatusCode = httpStatusCode;
 	}
 
-	public int getErrorCode() {
+	public String getErrorCode() {
 		return errorCode;
 	}
 
-	public void setErrorCode(int errorCode) {
+	public void setErrorCode(String errorCode) {
 		this.errorCode = errorCode;
 	}
 
