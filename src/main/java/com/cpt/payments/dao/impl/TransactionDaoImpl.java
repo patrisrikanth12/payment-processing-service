@@ -3,6 +3,8 @@ package com.cpt.payments.dao.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -25,6 +27,8 @@ public class TransactionDaoImpl implements TransactionDao {
 
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
+	
+	private final Logger logger = LogManager.getLogger(TransactionDaoImpl.class);
 
 	@Override
 	public Transaction createTransaction(Transaction transaction) {
@@ -42,9 +46,9 @@ public class TransactionDaoImpl implements TransactionDao {
 		GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
 		try {
 			isRowInserted = jdbcTemplate.update(sql, parameterSource, keyHolder);
-			transaction.setId(keyHolder.getKey().intValue());
+			transaction.setId(keyHolder.getKey().longValue());
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			logger.debug("Error while creating the transaction " + e.getMessage());
 		}
 		return isRowInserted == 0 ? null : transaction;
 	}
@@ -58,7 +62,7 @@ public class TransactionDaoImpl implements TransactionDao {
 			jdbcTemplate.update(sql, params);
 			return true;
 		} catch(Exception e) {
-			System.out.println("Transaction Status Update Failed");
+			logger.debug("Transaction Status Update Failed");
 		}
 		return false;
 	}
@@ -68,4 +72,19 @@ public class TransactionDaoImpl implements TransactionDao {
 		  return jdbcTemplate.queryForObject(
 		      "SELECT * FROM Transaction WHERE id = :id", params, new BeanPropertyRowMapper<Transaction>(Transaction.class));
 		}
+	
+	public boolean updateProviderError(long id, String providerCode, String providerMessage) {
+        String sql = "UPDATE transaction SET providerCode = ?, providerMessage = ? WHERE id = ?";
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("providerCode", providerCode);
+        map.put("providerMessage", providerCode);
+        map.put("id", String.valueOf(id));
+        try {
+        	jdbcTemplate.update(sql, map);
+        	return true;
+        } catch(Exception e) {
+        	logger.debug("Failed to update the providerCode and providerMessage of transaction");
+        }
+        return false;
+    }
 }

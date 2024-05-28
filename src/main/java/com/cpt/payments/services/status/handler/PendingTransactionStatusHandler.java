@@ -22,13 +22,16 @@ public class PendingTransactionStatusHandler implements TransactionStatusHandler
 	
 	@Override
 	public boolean updateStatus(Transaction transaction) {
+		int fromTransactionStatusId = transactionDao.getTransactionById(transaction.getId()).getTxnStatusId();
+		String fromTransactionStatus = TransactionStatusEnum.getTransactionStatusEnum(fromTransactionStatusId).getName();
+		
 		boolean transactionStatus = transactionDao.updateTransaction(transaction);
 		if (!transactionStatus) {
 			System.out.println("Transaction Status Update Failed");
 			return false;
 		}
 		TransactionLog transactionLog = TransactionLog.builder().transactionId(transaction.getId())
-				.txnFromStatus(TransactionStatusEnum.INITIATED.getName())
+				.txnFromStatus(fromTransactionStatus)
 				.txnToStatus(TransactionStatusEnum.PENDING.getName()).build();
 		transactionLogDao.createTransactionLog(transactionLog);
 		return true;
