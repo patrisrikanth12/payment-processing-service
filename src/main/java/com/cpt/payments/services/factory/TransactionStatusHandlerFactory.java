@@ -9,6 +9,7 @@ import com.cpt.payments.services.TransactionStatusHandler;
 import com.cpt.payments.services.status.handler.ApprovedTransactionStatusHandler;
 import com.cpt.payments.services.status.handler.CreatedTransactionStatusHandler;
 import com.cpt.payments.services.status.handler.FailedTransactionStatusHandler;
+import com.cpt.payments.services.status.handler.InitiatedTransactionStatusHandler;
 import com.cpt.payments.services.status.handler.PendingTransactionStatusHandler;
 
 @Component
@@ -26,6 +27,8 @@ public class TransactionStatusHandlerFactory {
 			return context.getBean(FailedTransactionStatusHandler.class);
 		case PENDING:	
 			return context.getBean(PendingTransactionStatusHandler.class);
+		case INITIATED:
+			return context.getBean(InitiatedTransactionStatusHandler.class);
 		default:
 			return null;
 		}

@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Transaction {
-	private Integer id;
+	private Long id;
 	private long userId;
 	private Integer paymentMethodId;
 	private Integer providerId;

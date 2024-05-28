@@ -13,7 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class TransactionLog {
 	private Integer id;
-	private Integer transactionId;
+	private Long transactionId;
 	private String txnFromStatus;
 	private String txnToStatus;
 }
