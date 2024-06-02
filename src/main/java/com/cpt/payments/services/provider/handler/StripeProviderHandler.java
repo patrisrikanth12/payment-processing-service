@@ -75,9 +75,9 @@ public class StripeProviderHandler implements ProviderHandler {
 			logger.debug("Response | response body is null");
 			updateTransactionStatusAsFailed(transaction);
 			throw new PaymentProcessingException(
-					HttpStatus.INTERNAL_SERVER_ERROR, 
-					ErrorCodeEnum.GENERIC_EXCEPTION.getErrorCode(), 
-					ErrorCodeEnum.GENERIC_EXCEPTION.getErrorMessage());
+					HttpStatus.BAD_GATEWAY, 
+					ErrorCodeEnum.STRIPE_PROVIDER_ERROR.getErrorCode(), 
+					ErrorCodeEnum.STRIPE_PROVIDER_ERROR.getErrorMessage());
 		}
 		
 		if(!response.getStatusCode().is2xxSuccessful()) {
@@ -100,9 +100,7 @@ public class StripeProviderHandler implements ProviderHandler {
 	public void handleNon200Response(ResponseEntity<String> response, long transactionId) {
 		ProviderServiceErrorResponse providerServiceErrorResponse = gson.fromJson(response.getBody(), ProviderServiceErrorResponse.class);
 		
-		boolean isErrorUpdateInDb = transactionDao.updateProviderError(transactionId, providerServiceErrorResponse.getErrorCode(), providerServiceErrorResponse.getErrorMessage());
-		
-		
+		transactionDao.updateProviderError(transactionId, providerServiceErrorResponse.getErrorCode(), providerServiceErrorResponse.getErrorMessage());
 		
 		if(providerServiceErrorResponse.isTpProviderError()) {
 			logger.debug("Stripe third party error || " + providerServiceErrorResponse);
@@ -116,9 +114,9 @@ public class StripeProviderHandler implements ProviderHandler {
 		
 		logger.debug("Error in Stripe Provider Service " + providerServiceErrorResponse);
 		throw new PaymentProcessingException(
-				HttpStatus.INTERNAL_SERVER_ERROR, 
-				ErrorCodeEnum.GENERIC_EXCEPTION.getErrorCode(), 
-				ErrorCodeEnum.GENERIC_EXCEPTION.getErrorMessage()
+				HttpStatus.BAD_GATEWAY, 
+				ErrorCodeEnum.STRIPE_PROVIDER_ERROR.getErrorCode(), 
+				ErrorCodeEnum.STRIPE_PROVIDER_ERROR.getErrorMessage()
 				);
 	}
 	

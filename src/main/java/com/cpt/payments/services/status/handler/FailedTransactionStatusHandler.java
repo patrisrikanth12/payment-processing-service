@@ -36,7 +36,7 @@ public class FailedTransactionStatusHandler implements TransactionStatusHandler{
 		
 		TransactionLog transactionLog = TransactionLog.builder()
 				.transactionId(transaction.getId())
-				.txnFromStatus(TransactionStatusEnum.getTransactionStatusEnum(fromTransactionStatusId).getName())
+				.txnFromStatus(fromTransactionStatus)
 				.txnToStatus(TransactionStatusEnum.FAILED.getName())
 				.build();
 		try {
