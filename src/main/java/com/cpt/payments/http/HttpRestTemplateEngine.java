@@ -37,7 +37,7 @@ public class HttpRestTemplateEngine {
 			requestFactory.setOutputStreaming(false);
 			restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(requestFactory));
 
-			HttpMethod method = prepareHttpMethod(httpRequest.getHttpMethod());
+			HttpMethod method = httpRequest.getHttpMethod();
 
 			ResponseEntity<String> response = restTemplate.exchange(httpRequest.getUrl(), method, request, String.class);
 
@@ -75,23 +75,6 @@ public class HttpRestTemplateEngine {
 
 		LOGGER.debug("createCustomErrorResponse||response:" + response);
 		return response;
-	}
-
-	private HttpMethod prepareHttpMethod(HttpMethod methodType) {
-		return methodType.valueOf(methodType.name());
-//		switch (methodType.name()) {
-//		case POST:
-//			return HttpMethod.POST;
-//		case GET:
-//			return HttpMethod.GET;
-//		case PATCH:
-//			return HttpMethod.PATCH;
-//		case PUT:
-//			return HttpMethod.PUT;
-//		default:
-//			LogMessage.log(LOGGER, "default httpMethod POST ");
-//			return HttpMethod.POST;
-//		}
 	}
 
 }
