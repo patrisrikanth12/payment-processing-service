@@ -24,7 +24,6 @@ public class InitiatedTransactionStatusHandler implements TransactionStatusHandl
 		int fromTransactionStatusId = transactionDao.getTransactionById(transaction.getId()).getTxnStatusId();
 		String fromTransactionStatus = TransactionStatusEnum.getTransactionStatusEnum(fromTransactionStatusId).getName();
 		
-		
 		boolean transactionStatus = transactionDao.updateTransaction(transaction);
 		if (!transactionStatus) {
 			System.out.println("Transaction Status Update Failed");
@@ -36,5 +35,4 @@ public class InitiatedTransactionStatusHandler implements TransactionStatusHandl
 		transactionLogDao.createTransactionLog(transactionLog);
 		return true;
 	}
-
 }

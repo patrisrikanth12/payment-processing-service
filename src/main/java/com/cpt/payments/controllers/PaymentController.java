@@ -17,7 +17,6 @@ import com.cpt.payments.pojos.ProcessingServiceRequest;
 import com.cpt.payments.pojos.TransactionReqRes;
 import com.cpt.payments.services.PaymentProcessingService;
 import com.cpt.payments.services.PaymentStatusService;
-import com.cpt.payments.utils.TransactionMapper;
 
 @RestController
 @RequestMapping(Endpoints.PAYMENT)
@@ -28,22 +27,19 @@ public class PaymentController {
 	
 	@Autowired
 	private PaymentProcessingService paymentProcessingService;
+
+	private ModelMapper modelMapper;
 	
-	@Autowired
-	private TransactionMapper transactionMapper;
-	
-	@PostMapping(Endpoints.STATUS_UPDATE)
+	@PostMapping(Endpoints.CREATE_PAYMENT)
 	public ResponseEntity<TransactionReqRes> createPayment(@RequestBody TransactionReqRes transactionReq) {
-		Transaction transaction = transactionMapper.toDTO(transactionReq);
-		System.out.println(transactionReq.getTxnStatusId());
-		Transaction returnedTransaction = paymentStatusService.updateStatus(transaction);
-		TransactionReqRes returnedTransactionReqRes = transactionMapper.toResponseObject(returnedTransaction);
+		Transaction transaction = modelMapper.map(transactionReq, Transaction.class);
+		Transaction returnedTransaction = this.paymentStatusService.updateStatus(transaction);
+		TransactionReqRes returnedTransactionReqRes = this.modelMapper.map(returnedTransaction, TransactionReqRes.class);
 		return new ResponseEntity<TransactionReqRes>(returnedTransactionReqRes, HttpStatus.CREATED);
 	}
 	
 	@PostMapping(Endpoints.PROCESS_PAYMENT)
 	public ResponseEntity<PaymentResponse> processPayment(@RequestBody ProcessingServiceRequest processingServiceRequest) {
-		System.out.println("invoked");
 		PaymentResponse paymentResponse = this.paymentProcessingService.processPayment(processingServiceRequest);
 		return new ResponseEntity<PaymentResponse>(paymentResponse, HttpStatus.OK);
 	}
